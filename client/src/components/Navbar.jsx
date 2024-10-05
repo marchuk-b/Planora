@@ -5,7 +5,7 @@ import "./Navbar.scss";
 const Navbar = () => {
   return (
     <nav>
-      <div className="nav-wrapper">
+      <div className="nav-wrapper navbar green">
         <a href="/" className="brand-logo">
           Planora
         </a>
