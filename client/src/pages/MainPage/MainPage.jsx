@@ -4,6 +4,7 @@ const MainPage = () => {
     return (
         <div>
             <h1>Main page</h1>
+            <h2> gheffdjas</h2>
         </div>
     );
 }

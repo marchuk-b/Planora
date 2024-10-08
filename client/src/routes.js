@@ -6,19 +6,20 @@ import AuthPage from './pages/AuthPage/AuthPage'
 
 
 export const useRoutes = (isLogin) => {
-    if(isLogin) {
+    if(!isLogin) {
         return (
             <Routes>
-                <Route path='/' element={<MainPage />} />
-                <Route path='*' element={<Navigate to='/' />} />
+                <Route path='/authpage/*' exact element={<AuthPage />} />
+                <Route path='*' exact element={<Navigate to='/login' />} /> 
             </Routes>
         )
     }
-
+    
     return (
         <Routes>
-            <Route path='/login/*' element={<AuthPage />} />
-            <Route path='*' element={<Navigate to='/' />} />
+            <Route path='/' exact element={<MainPage />} />
+            <Route path='*' exact element={<Navigate to='/' />} />
         </Routes>
     )
+   
 }

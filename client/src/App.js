@@ -3,7 +3,7 @@ import './App.scss'
 import Navbar from './components/Navbar'
 import { useRoutes } from './routes'
 import { AuthContext } from './context/AuthContext'
-import {useAuth} from './hooks/auth.hook'
+import { useAuth } from './hooks/auth.hook'
 
 
 function App() {
@@ -14,8 +14,8 @@ function App() {
     return (
         <AuthContext.Provider value={{login, logout, token, userId, IsReady}}>
             <div className="App">
-            <Navbar />
-            { routes }
+                <Navbar />
+                { routes }
             </div>
         </AuthContext.Provider>
     );

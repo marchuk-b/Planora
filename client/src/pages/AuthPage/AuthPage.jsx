@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import "./AuthPage.scss";
 import { Route, Routes, Link } from "react-router-dom";
 import axios from 'axios'
+import { AuthContext } from "../../context/AuthContext";
 
-const LoginPage = ({ changeHandler, form}) => {
+const LoginPage = ({ changeHandler, loginHandler, form}) => {
     return (
         <div className="container">
             <div className="auth-page">
@@ -22,8 +23,8 @@ const LoginPage = ({ changeHandler, form}) => {
                         </div>
                     </div>
                     <div className="row">
-                        <button className="waves-effect waves-light btn blue">Увійти</button>
-                        <Link to="/registration" className="btn-outline btn-reg">
+                        <button className="waves-effect waves-light btn blue" onClick={loginHandler} >Увійти</button>
+                        <Link to="/authpage/registration" className="btn-outline btn-reg">
                             Немає акаунта ?
                         </Link>
                     </div>
@@ -53,7 +54,7 @@ const RegistrationPage = ({ changeHandler, registerHandler, form }) => {
                     </div>
                     <div className="row">
                         <button className="waves-effect waves-light btn blue" onClick={registerHandler} >Реєстрація</button>
-                        <Link to="/login" className="btn-outline btn-reg">
+                        <Link to="/authpage/login" className="btn-outline btn-reg">
                             Уже маєте акаунт?
                         </Link>
                     </div>
@@ -69,9 +70,10 @@ const AuthPage = () => {
         password: ''
     });
 
+    const {login} = useContext(AuthContext)
+
     const changeHandler = (event) => {
         setForm({...form, [event.target.name]: event.target.value});
-
     }
 
     const registerHandler = async () => {
@@ -87,11 +89,27 @@ const AuthPage = () => {
         }
     }
 
+    const loginHandler = async () => {
+        try {
+            await axios.post('/api/auth/login', {...form}, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                login(response.data.token, response.data.userId)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <Routes>
             <Route path="/login" element={
                 <LoginPage 
-                    changeHandler={changeHandler} 
+                    changeHandler={changeHandler}
+                    loginHandler={loginHandler} 
                     form={form} 
                 />} 
             />
