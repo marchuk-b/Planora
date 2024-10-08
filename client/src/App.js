@@ -1,14 +1,24 @@
-    import './App.scss';
-    import AuthPage from './pages/AuthPage/AuthPage';
-    import Navbar from './components/Navbar';
+import './App.scss'
 
-    function App() {
-        return (
-          <div className="App">
+import Navbar from './components/Navbar'
+import { useRoutes } from './routes'
+import { AuthContext } from './context/AuthContext'
+import {useAuth} from './hooks/auth.hook'
+
+
+function App() {
+    const {login, logout, token, userId, IsReady} = useAuth()
+    const isLogin = !!token
+    const routes = useRoutes(isLogin)
+
+    return (
+        <AuthContext.Provider value={{login, logout, token, userId, IsReady}}>
+            <div className="App">
             <Navbar />
-            <AuthPage />
-          </div>
-        );
-      }
+            { routes }
+            </div>
+        </AuthContext.Provider>
+    );
+  }
 
-    export default App;
+export default App;
