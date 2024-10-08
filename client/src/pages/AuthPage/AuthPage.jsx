@@ -76,12 +76,12 @@ const AuthPage = () => {
 
     const registerHandler = async () => {
         try {
-            const response = await axios.post('/api/auth/registration', {...form}, {
+            await axios.post('/api/auth/registration', {...form}, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            console.log(response.data)
+            .then(response => console.log(response))
         } catch (error) {
             console.log(error)
         }
