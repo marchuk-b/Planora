@@ -7,6 +7,7 @@ const PORT = 5000;
 
 app.use(express.json({extended: true}))
 app.use('/api/auth', require('./routes/auth.route'))
+app.use('/api/events', require('./routes/events.route'))
 
 async function start() {
     try {
