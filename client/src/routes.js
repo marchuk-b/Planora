@@ -10,7 +10,7 @@ export const useRoutes = (isLogin) => {
         return (
             <Routes>
                 <Route path='/authpage/*' exact element={<AuthPage />} />
-                <Route path='*' exact element={<Navigate to='/login' />} /> 
+                <Route path='*' exact element={<Navigate to='/authpage/login' />} /> 
             </Routes>
         )
     }
