@@ -1,6 +1,6 @@
 import React, {useState, useContext} from "react";
 import "./AuthPage.scss";
-import { Route, Routes, Link } from "react-router-dom";
+import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import axios from 'axios'
 import { AuthContext } from "../../context/AuthContext";
 
@@ -65,6 +65,9 @@ const RegistrationPage = ({ changeHandler, registerHandler, form }) => {
 };
 
 const AuthPage = () => {
+
+    const navigate = useNavigate()
+
     const [form, setForm] = useState({
         email: '',
         password: ''
@@ -83,7 +86,7 @@ const AuthPage = () => {
                     'Content-Type': 'application/json'
                 }
             })
-            .then(response => console.log(response))
+            navigate('/')
         } catch (error) {
             console.log(error)
         }
