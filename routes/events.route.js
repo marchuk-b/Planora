@@ -24,5 +24,29 @@ router.post('/add', async (req, res) => {
     }
 })
 
+router.get('/', async (req, res) => {
+    try {
+        const { userId } = req.query
+
+        const event = await Event.find({owner: userId})
+
+        res.json(event)
+
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const event = await Event.findByIdAndDelete({_id: req.params.id})
+
+        res.json(event)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 
 module.exports = router
