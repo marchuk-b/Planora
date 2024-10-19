@@ -28,6 +28,10 @@ const Navbar = () => {
             </ul>
           )
         }
+        <div className="links right hide-on-med-and-down">
+          {isLogin && <Link to="/create" className="link">Створити подію</Link>}
+          <Link to="/" className="link">Головна</Link>
+        </div>
       </div>
     </nav>
   );

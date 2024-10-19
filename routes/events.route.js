@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const Event = require('../models/Event');
 
-router.post('/add', async (req, res) => {
+router.post('/create', async (req, res) => {
     try {
         const {name, place, date, description, numberOfPeople, userId} = req.body
 
