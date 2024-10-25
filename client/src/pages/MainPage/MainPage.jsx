@@ -1,6 +1,7 @@
 import React, {useState, useContext, useCallback, useEffect} from 'react';
 import axios from 'axios'
 import { AuthContext } from '../../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 import "./MainPage.scss"
 
@@ -65,6 +66,11 @@ const MainPage = () => {
                                         <div><strong>Категорія:</strong> {event.category}</div>
                                     </div>
                                     <div className="col events-buttons">
+                                        <i className="material-icons grey-text">favorite</i>
+                                        <i className="material-icons grey-text">directions_run</i>
+                                        <Link to={`/update/${event._id}`}>
+                                            <i className="material-icons blue-text">edit</i>
+                                        </Link>
                                         <i className="material-icons red-text" onClick={() => removeEvent(event._id)}>delete</i>
                                     </div>
                                 </div>

@@ -3,6 +3,7 @@ import {Routes, Route, Navigate} from "react-router-dom"
 import MainPage from './pages/MainPage/MainPage'
 import AuthPage from './pages/AuthPage/AuthPage'
 import CreatePage from './pages/CreatePage/CreatePage'
+import EditPage from './pages/EditPage/EditPage'
 
 
 
@@ -20,6 +21,7 @@ export const useRoutes = (isLogin) => {
         <Routes>
             <Route path='/' exact element={<MainPage />} />
             <Route path='/create' element={<CreatePage />} /> 
+            <Route path='/update/:eventId' element={<EditPage />} /> 
             <Route path='*' exact element={<Navigate to='/' />} />
         </Routes>
     )
