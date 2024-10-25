@@ -4,15 +4,16 @@ const Event = require('../models/Event');
 
 router.post('/create', async (req, res) => {
     try {
-        const {name, place, date, description, numberOfPeople, userId} = req.body
+        const {name, place, date, time, description, category, userId} = req.body
 
         const event = await new Event({
+            owner: userId,
             name,
             place,
             date,
+            time,
             description,
-            numberOfPeople,
-            owner: userId
+            category
         })
 
         await event.save()

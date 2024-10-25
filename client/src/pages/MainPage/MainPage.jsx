@@ -40,17 +40,30 @@ const MainPage = () => {
         getEvent();
     }, [getEvent]);
 
+    // Helper function to format date
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp);
+        return date.toLocaleDateString(); // Format as per your preference
+    };
+
     return (
         <div className="container">
             <div className="main-page">
                 <h3>Створені події</h3>
                 <div className="events">
                     {
-                       events.length > 0 ? (
+                        events.length > 0 ? (
                             events.map((event, index) => (
-                                <div className="row flex events-item" key={index}>
+                                <div className="row flex events-item" key={event._id}>
                                     <div className="col events-num">{index + 1}</div>
-                                    <div className="col events-text">{event.name}</div>
+                                    <div className="col events-text">
+                                        <div><strong>Назва:</strong> {event.name}</div>
+                                        <div><strong>Місце:</strong> {event.place}</div>
+                                        <div><strong>Дата:</strong> {formatDate(event.date)}</div>
+                                        <div><strong>Час:</strong> {event.time}</div>
+                                        <div><strong>Опис:</strong> {event.description}</div>
+                                        <div><strong>Категорія:</strong> {event.category}</div>
+                                    </div>
                                     <div className="col events-buttons">
                                         <i className="material-icons red-text" onClick={() => removeEvent(event._id)}>delete</i>
                                     </div>
