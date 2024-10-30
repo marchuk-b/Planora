@@ -91,11 +91,9 @@ const CreatePage = () => {
                             />
                             <label htmlFor="date">Дата: </label>
                         </div>
-                    </div>
-                    <div className="row">
                         <div className="input-field col s12">
                             <input 
-                                type="time" // Use type "time" for time input
+                                type="time"
                                 id="time"
                                 className="validate"
                                 value={time}
@@ -103,33 +101,36 @@ const CreatePage = () => {
                             />
                             <label htmlFor="time">Час: </label>
                         </div>
+                        <div className="input-field col s12">
+                            <select
+                                id="category"
+                                className="browser-default" // Style for materialize compatibility
+                                value={category}
+                                onChange={e => setCategory(e.target.value)}
+                            >
+                                <option value="" disabled></option>
+                                <option value="Конференція">Конференція</option>
+                                <option value="Воркшоп">Воркшоп</option>
+                                <option value="Зустріч">Зустріч</option>
+                                <option value="Семінар">Семінар</option>
+                                <option value="Вебінар">Вебінар</option>
+                            </select>
+                            <label htmlFor="category" className={`category-label ${category ? 'active' : ''}`}>Категорія:</label>
+                        </div>
                     </div>
                     <div className="row">
                         <div className="input-field col s12">
                             <input
                                 type="text"
                                 id="description"
-                                name="description"
                                 className="validate"
                                 value={description}
                                 onChange={e => setDescription(e.target.value)}
                             />
-                            <label htmlFor="description">Опис: </label>
+                            <label htmlFor="description" className={description ? 'active' : ''}>Опис:</label>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="input-field col s12">
-                            <input
-                                type="text"
-                                id="category"
-                                name="category"
-                                className="validate"
-                                value={category}
-                                onChange={e => setCategory(e.target.value)}
-                            />
-                            <label htmlFor="category">Категорія: </label>
-                        </div>
-                    </div>
+
                     <div className="row">
                         <button className="waves-effect waves-light btn green" onClick={createEvent}>Додати</button>
                         <Link to="/" className="btn-outline">Скасувати</Link>

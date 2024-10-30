@@ -110,8 +110,6 @@ const EditPage = () => {
                             />
                             <label htmlFor="date" className={date ? 'active' : ''}>Дата:</label>
                         </div>
-                    </div>
-                    <div className="row">
                         <div className="input-field col s12">
                             <input
                                 type="time"
@@ -122,10 +120,26 @@ const EditPage = () => {
                             />
                             <label htmlFor="time" className={time ? 'active' : ''}>Час:</label>
                         </div>
+                        <div className="input-field col s12">
+                            <select
+                                id="category"
+                                className="browser-default" // Style for materialize compatibility
+                                value={category}
+                                onChange={e => setCategory(e.target.value)}
+                            >
+                                <option value="" disabled></option>
+                                <option value="Конференція">Конференція</option>
+                                <option value="Воркшоп">Воркшоп</option>
+                                <option value="Зустріч">Зустріч</option>
+                                <option value="Семінар">Семінар</option>
+                                <option value="Вебінар">Вебінар</option>
+                            </select>
+                            <label htmlFor="category" className={`category-label ${category ? 'active' : ''}`}>Категорія:</label>
+                        </div>
                     </div>
                     <div className="row">
                         <div className="input-field col s12">
-                            <input
+                            <input  
                                 type="text"
                                 id="description"
                                 className="validate"
@@ -133,18 +147,6 @@ const EditPage = () => {
                                 onChange={e => setDescription(e.target.value)}
                             />
                             <label htmlFor="description" className={description ? 'active' : ''}>Опис:</label>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="input-field col s12">
-                            <input
-                                type="text"
-                                id="category"
-                                className="validate"
-                                value={category}
-                                onChange={e => setCategory(e.target.value)}
-                            />
-                            <label htmlFor="category" className={category ? 'active' : ''}>Категорія:</label>
                         </div>
                     </div>
                     <div className="row">
