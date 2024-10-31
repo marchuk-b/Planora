@@ -1,0 +1,18 @@
+.main-page {
+    .events-list {
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        .event-card {
+            width: 30%;
+            border-radius: 5px;
+            background-color: #ffffff;
+            margin: 40px 0 0px 0;
+            padding: 20px;
+            filter: drop-shadow(7px 10px 5px #00000021);
+            h3 {
+                margin-top: 0;
+            }
+        }
+    }
+}

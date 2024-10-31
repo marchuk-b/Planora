@@ -39,6 +39,17 @@ router.get('/', async (req, res) => {
 
 })
 
+// Get all events
+router.get('/all', async (req, res) => {
+    try {
+        const events = await Event.find().populate('owner', 'email'); // Fetch all events without filtering by userId
+        res.json(events);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Помилка сервера' });
+    }
+});
+
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params; // Get eventId from URL params
