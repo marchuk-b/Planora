@@ -123,7 +123,7 @@ const EditPage = () => {
                         <div className="input-field col s12">
                             <select
                                 id="category"
-                                className="browser-default" // Style for materialize compatibility
+                                className="browser-default"
                                 value={category}
                                 onChange={e => setCategory(e.target.value)}
                             >

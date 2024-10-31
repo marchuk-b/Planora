@@ -5,7 +5,6 @@ const Search = ({ placeholder, onSearch }) => {
     const [query, setQuery] = useState('');
     const [searchBy, setSearchBy] = useState('name'); // Default to search by name
 
-    // Handle input change and call the `onSearch` function with both query and search type
     const handleQueryChange = (e) => {
         setQuery(e.target.value);
         onSearch(e.target.value, searchBy);
@@ -20,12 +19,17 @@ const Search = ({ placeholder, onSearch }) => {
         <div className="search">
             <input 
                 type="text" 
+                id="search"
                 placeholder={placeholder || "Search..."} 
                 value={query} 
                 onChange={handleQueryChange} 
-                className="search-input"
+                className="search-input" 
             />
-            <select value={searchBy} onChange={handleSearchByChange} className="search-select">
+            <select 
+                value={searchBy} 
+                onChange={handleSearchByChange} 
+                className="search-select"
+            >
                 <option value="name">Name</option>
                 <option value="category">Category</option>
                 <option value="userName">User</option>
