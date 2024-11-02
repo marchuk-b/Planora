@@ -4,10 +4,12 @@ import { AuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 
 import "./MyEventsPage.scss"
+import EventCard from '../../components/EventCard';
 
 const MyEventsPage = () => {
     const {userId} = useContext(AuthContext)
     const [events, setEvents] = useState([])
+    const [followedEvents, setFollowedEvents] = useState([]);
 
     const getEvent = useCallback(async () => {
         try {
@@ -47,6 +49,19 @@ const MyEventsPage = () => {
         return date.toLocaleDateString(); // Format as per your preference
     };
 
+    useEffect(() => {
+        const fetchFollowedEvents = async () => {
+            try {
+                const response = await axios.get(`/api/events/myEvents/${userId}`);
+                setFollowedEvents(response.data);
+            } catch (error) {
+                console.error('Error fetching followed events:', error);
+            }
+        };
+
+        fetchFollowedEvents();
+    }, [userId]);
+
     return (
         <div className="container">
             <div className="main-page">
@@ -79,6 +94,16 @@ const MyEventsPage = () => {
                             <p>Немає створених подій</p>
                         )
                     }
+                </div>
+                <div className="followed-events">
+                    <h3>Вподобані події</h3>
+                    {followedEvents.length > 0 ? (
+                        followedEvents.map(event => (
+                            <EventCard key={event._id} event={event} userId={userId} />
+                        ))
+                    ) : (
+                        <p>Ви не вподобали жодної події</p>
+                    )}
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const Event = require('../models/Event');
 
+// Create event
 router.post('/create', async (req, res) => {
     try {
         const {name, place, date, time, description, category, userId} = req.body
@@ -24,6 +25,7 @@ router.post('/create', async (req, res) => {
         console.log(error)
     }
 })
+
 
 router.get('/', async (req, res) => {
     try {
@@ -50,6 +52,7 @@ router.get('/all', async (req, res) => {
     }
 });
 
+//Get event by id
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params; // Get eventId from URL params
@@ -67,6 +70,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+//Delete event by id
 router.delete('/delete/:id', async (req, res) => {
     try {
         const event = await Event.findByIdAndDelete({_id: req.params.id})
@@ -77,6 +81,7 @@ router.delete('/delete/:id', async (req, res) => {
     }
 })
 
+//Edit event
 router.put('/update/:id', async (req, res) => {
     try {
         const _id = req.params.id;
@@ -93,6 +98,50 @@ router.put('/update/:id', async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Помилка сервера' });
+    }
+});
+
+// Follow an event
+router.post('/api/events/follow/:id', async (req, res) => {
+    const { userId } = req.body;
+    const eventId = req.params.id; // Get event ID from URL
+
+    console.log(userId, eventId)
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (!user.followedEvents.includes(eventId)) {
+            user.followedEvents.push(eventId);
+            await user.save();
+        }
+
+        res.status(200).json({ message: 'Event followed successfully', followedEvents: user.followedEvents });
+    } catch (error) {
+        res.status(500).json({ message: 'Error following event', error });
+    }
+});
+
+// Unfollow an event
+router.post('/api/events/unfollow/:id', async (req, res) => {
+    const { userId } = req.body;
+    const eventId = req.params.id; // Get event ID from URL
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Remove the event ID from the followedEvents array
+        user.followedEvents = user.followedEvents.filter(id => id.toString() !== eventId);
+        await user.save();
+
+        res.status(200).json({ message: 'Event unfollowed successfully', followedEvents: user.followedEvents });
+    } catch (error) {
+        res.status(500).json({ message: 'Error unfollowing event', error });
     }
 });
 

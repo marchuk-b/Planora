@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './MainPage.scss';
 import Search from '../../components/Search';
+import {AuthContext} from '../../context/AuthContext'
+import EventCard from '../../components/EventCard';
 
 const MainPage = () => {
+    const {userId} = useContext(AuthContext)
     const [events, setEvents] = useState([]); // State to store all events
     const [filteredEvents, setFilteredEvents] = useState([]); // Events after filtering
 
@@ -65,47 +68,7 @@ const MainPage = () => {
                 <div className="events-list">
                     {filteredEvents.length > 0 ? (
                         filteredEvents.map(event => (
-                            <div key={event._id} className="event-card">
-                                <h3>{event.name}</h3>
-                                <p>
-                                    <span className="material-icons">
-                                        place
-                                    </span>
-                                    {event.place}
-                                </p>
-                                <p>
-                                    <span className="material-icons">
-                                        today
-                                    </span>
-                                    {new Date(event.date).toLocaleDateString()}</p>
-                                <p>
-                                    <span className="material-icons">
-                                        schedule
-                                    </span> 
-                                    {event.time}
-                                </p>
-                                <p>
-                                    <span className="material-icons">
-                                        category
-                                    </span>
-                                    {event.category}
-                                </p>
-                                <p>
-                                    <span className="material-icons">
-                                        perm_identity
-                                    </span>
-                                    {event.userName}
-                                </p>
-                                <p>
-                                    <span class="material-icons">
-                                        description
-                                    </span>
-                                    {event.description}</p>
-                                <div className="col events-buttons">
-                                    <i className="material-icons grey-text">favorite</i>
-                                    <i className="material-icons grey-text">directions_run</i>
-                                </div>
-                            </div>
+                            <EventCard key={event._id} event={event} userId={userId} onFollowChange={() => {}} />
                         ))
                     ) : (
                         <p>Немає доступних подій.</p>
