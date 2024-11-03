@@ -8,7 +8,7 @@ const schema = new Schema({
     time: {type: String, required: true},
     category: {type: String, required: true},
     description: {type: String},
-    isFollowed: {type: Boolean, default: false},
+    follows: [{type: Types.ObjectId, ref: 'User'}],
     willBePresent: {type: Boolean, default: false}
 })
 

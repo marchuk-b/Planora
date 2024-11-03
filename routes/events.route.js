@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 const Event = require('../models/Event');
+const FollowedEvent = require('../models/FollowedEvent');
 
 // Create event
 router.post('/create', async (req, res) => {
@@ -101,6 +102,56 @@ router.put('/update/:id', async (req, res) => {
     }
 });
 
+// // Follow an event
+// router.put('/follow', async (req, res) => {
+//     try {
+//         // Ensure eventId is present in the request body
+//         if (!req.body.eventId) {
+//             return res.status(400).json({ message: 'Event ID is required' });
+//         }
+
+//         // Update the event document to add the user's ID to the follow array
+//         const updatedEvent = await Event.findByIdAndUpdate(
+//             req.body.eventId,
+//             { $addToSet: { follow: req.user._id } }, // Use $addToSet to avoid duplicates
+//             { new: true }
+//         );
+
+//         if (!updatedEvent) {
+//             return res.status(404).json({ message: 'Event not found' });
+//         }
+
+//         res.status(200).json({ message: 'Event followed successfully', updatedEvent });
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error following event', error });
+//     }
+// });
+
+// // Unfollow an event
+// router.put('/unfollow', async (req, res) => {
+//     try {
+//         // Ensure eventId is present in the request body
+//         if (!req.body.eventId) {
+//             return res.status(400).json({ message: 'Event ID is required' });
+//         }
+
+//         // Update the event document to remove the user's ID from the follow array
+//         const updatedEvent = await Event.findByIdAndUpdate(
+//             req.body.eventId,
+//             { $pull: { follow: req.user._id } },
+//             { new: true }
+//         );
+
+//         if (!updatedEvent) {
+//             return res.status(404).json({ message: 'Event not found' });
+//         }
+
+//         res.status(200).json({ message: 'Event unfollowed successfully', updatedEvent });
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error unfollowing event', error });
+//     }
+// });
+
 // Follow an event
 router.post('/api/events/follow/:id', async (req, res) => {
     const { userId } = req.body;
@@ -144,5 +195,19 @@ router.post('/api/events/unfollow/:id', async (req, res) => {
         res.status(500).json({ message: 'Error unfollowing event', error });
     }
 });
+
+
+// router.get('/followed', async (req, res) => {
+//     const { userId } = req.query;
+
+//     console.log(userId)
+//     try {
+//         const followedEvents = await FollowedEvent.find({user: userId}).populate('event'); // Fetch all events without filtering by userId
+//         res.json(followedEvents);
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({ message: 'Помилка сервера' });
+//     }
+// })
 
 module.exports = router

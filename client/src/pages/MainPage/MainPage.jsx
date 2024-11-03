@@ -39,6 +39,29 @@ const MainPage = () => {
         fetchAllEvents();
     }, []);
 
+    // useEffect(() => {
+    //     const fetchFollowed = async () => {
+    //         try {
+    //             const response = await axios.get('/api/events/followed', {
+    //                 headers: { "Content-Type": "application/json" }
+    //             });
+
+    //             console.log(response.data)
+    //             // const eventsWithUserName = response.data.map(event => ({
+    //             //     ...event,
+    //             //     userName: getUsernameFromEmail(event.owner?.email || event.user) // Adjust based on actual data structure
+    //             // }));
+                
+    //             // setEvents(eventsWithUserName);
+    //             // setFilteredEvents(eventsWithUserName);
+    //         } catch (error) {
+    //             console.error("Error fetching events:", error);
+    //         }
+    //     };
+
+    //     fetchFollowed();
+    // }, []);
+
     // Function to handle search filtering
     const handleSearch = (query, searchBy) => {
         const filtered = events.filter(event => {
@@ -53,6 +76,8 @@ const MainPage = () => {
         });
         setFilteredEvents(filtered);
     };
+
+
 
     return (
         <div className="main-page">
