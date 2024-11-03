@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const EventCard = ({ event, userId, onFollowChange }) => {
+const EventCard = ({ event, userId, onFollowChange, followedEventsIds }) => {
     const [isFollowing, setIsFollowing] = useState(false);
 
     // Check if the user is following the event when the component mounts
     useEffect(() => {
         const checkFollowingStatus = async () => {
             try {
-                // Fetch the user's followed events to check if this event is followed
-                const response = await axios.get(`/api/users/${userId}`);
-                const user = response.data; // Assuming this returns the user object
-
-                // Check if the followedEvents array contains the event ID
-                setIsFollowing(user.followedEvents.includes(event._id));
+                setIsFollowing(followedEventsIds.includes(event._id));
             } catch (error) {
                 console.error('Error fetching user data:', error.response ? error.response.data : error.message);
             }
@@ -23,7 +18,7 @@ const EventCard = ({ event, userId, onFollowChange }) => {
         if (userId && event && event._id) {
             checkFollowingStatus();
         }
-    }, [userId, event]); // Add dependencies to ensure it runs when userId or event changes
+    }, [userId, event, followedEventsIds]); // Add dependencies to ensure it runs when userId or event changes
 
     const handleFollow = async () => {
         try {
