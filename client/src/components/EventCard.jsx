@@ -1,40 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import "./EventCard.scss";
+
 const EventCard = ({ event, userId, onFollowChange, followedEventsIds }) => {
     const [isFollowing, setIsFollowing] = useState(false);
 
-    // Check if the user is following the event when the component mounts
     useEffect(() => {
-        const checkFollowingStatus = async () => {
+        const checkFollowingStatus = () => {
             try {
-                setIsFollowing(followedEventsIds.includes(event._id));
+                if (Array.isArray(followedEventsIds) && followedEventsIds.length > 0) {
+                    const isEventFollowed = followedEventsIds.some(followedEvent => followedEvent._id === event._id);
+                    setIsFollowing(isEventFollowed);
+                    localStorage.setItem(`isFollowing-${event._id}`, JSON.stringify(isEventFollowed));
+                } else {
+                    setIsFollowing(false);
+                }
             } catch (error) {
                 console.error('Error fetching user data:', error.response ? error.response.data : error.message);
             }
         };
-
-        // Only call if userId and event._id are defined
+    
         if (userId && event && event._id) {
-            checkFollowingStatus();
+            // Перевіряємо збережений стан у localStorage
+            const savedStatus = localStorage.getItem(`isFollowing-${event._id}`);
+            if (savedStatus !== null) {
+                setIsFollowing(JSON.parse(savedStatus));
+            } else {
+                checkFollowingStatus();
+            }
         }
-    }, [userId, event, followedEventsIds]); // Add dependencies to ensure it runs when userId or event changes
+    }, [userId, event, followedEventsIds]);
+    
 
     const handleFollow = async () => {
         try {
             if (isFollowing) {
-                // Unfollow request
                 await axios.delete(`/api/events/unfollow/${event._id}`, {
                     data: { userId }
                 });
+                localStorage.setItem(`isFollowing-${event._id}`, JSON.stringify(false));
             } else {
-                // Follow request
                 await axios.post(`/api/events/follow/${event._id}`, {
-                    userId // Ensure this is structured correctly for your backend
+                    userId
                 });
+                localStorage.setItem(`isFollowing-${event._id}`, JSON.stringify(true));
             }
             setIsFollowing(!isFollowing);
-            onFollowChange(); // Call to update any parent component state
+            onFollowChange();
         } catch (error) {
             console.error('Error following/unfollowing event:', error.response ? error.response.data : error.message);
         }
@@ -70,7 +83,7 @@ const EventCard = ({ event, userId, onFollowChange, followedEventsIds }) => {
 
             <div className="col events-buttons">
                 <i 
-                    className="material-icons" 
+                    className="material-icons red-text" 
                     onClick={handleFollow}
                     role="button" 
                     tabIndex={0}

@@ -10,54 +10,6 @@
         margin: 0 auto;
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 1rem; // Add some space between event cards
-
-        .event-card {
-            padding: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            width: 32%;
-
-            transition: all .2s linear;
-            cursor: pointer;
-
-            h3 {
-                margin: 0;
-                font-size: 1.5rem;
-            }
-
-            p {
-                display: flex;
-                align-items: center;
-                font-size: 1rem;
-                margin: 0.5rem 0;
-
-                .material-icons {
-                    font-size: 1.2rem;
-                    color: #6c757d;
-                    margin-right: 0.5rem; // Add space between icon and text
-                }
-            }
-
-            .events-buttons {
-                display: flex;
-                gap: 1rem;
-                justify-content: flex-end; // Align buttons to the right
-                margin-top: 1rem;
-
-                .material-icons {
-                    font-size: 1.5rem;
-                    cursor: pointer;
-                    color: #757575;
-
-                    &:hover {
-                        color: #e57373; // Change color on hover for a visual effect
-                    }
-                }
-            }
-        }
-        .event-card:hover {
-            box-shadow: 5px 10px 15px rgba(76, 175, 79, 0.4);
-        }
+        gap: 1rem; // Add some space between event card
     }
 }

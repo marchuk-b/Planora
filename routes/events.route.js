@@ -18,7 +18,15 @@ router.post('/create', async (req, res) => {
             category
         })
 
-        await event.save()
+        // Збереження події в базі даних
+        await event.save();
+
+        // Оновлення користувача для додавання події до масиву `user_events`
+        await User.findByIdAndUpdate(
+            userId,
+            { $push: { user_events: event._id } },
+            { new: true } // Повернути оновлений документ
+        );
 
         res.json(event)
 
@@ -87,13 +95,32 @@ router.get('/:id', async (req, res) => {
 //Delete event by id
 router.delete('/delete/:id', async (req, res) => {
     try {
-        const event = await Event.findByIdAndDelete({_id: req.params.id})
+        // Видалення події
+        const event = await Event.findByIdAndDelete(req.params.id);
 
-        res.json(event)
+        if (!event) {
+            return res.status(404).json({ message: 'Подію не знайдено' });
+        }
+
+        const userId = event.owner;
+        // Оновлення користувача для видалення події з масиву `user_events`
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { $pull: { user_events: event._id } },
+            { new: true } // Повернути оновлений документ
+        );
+
+        // Перевірка, чи користувач було оновлено
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'Користувача не знайдено' });
+        }
+
+        res.status(200).json({ message: 'Подію успішно видалено', event });
     } catch (error) {
-        console.log(error)
+        console.error(error);
+        res.status(500).json({ message: 'Помилка сервера', error });
     }
-})
+});
 
 //Edit event
 router.put('/update/:id', async (req, res) => {

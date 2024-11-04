@@ -9,7 +9,7 @@ import EventCard from '../../components/EventCard';
 const MyEventsPage = () => {
     const {userId} = useContext(AuthContext)
     const [events, setEvents] = useState([])
-    const [followedEvents, setFollowedEvents] = useState([]);
+    const [followedEventsIds, setFollowedEventsIds] = useState([]);
 
     const getEvent = useCallback(async () => {
         try {
@@ -49,17 +49,46 @@ const MyEventsPage = () => {
         return date.toLocaleDateString(); // Format as per your preference
     };
 
+    function getUsernameFromEmail(email) {
+        if (!email || typeof email !== 'string') return 'Невідомий';
+        return email.split('@')[0];
+    }
+
     useEffect(() => {
-        const fetchFollowedEvents = async () => {
+        const fetchFollowed = async () => {
             try {
-                const response = await axios.get(`/api/events/myEvents/${userId}`);
-                setFollowedEvents(response.data);
+                // Fetch the IDs of followed events
+                const response = await axios.get(`/api/events/followed/${userId}`, {
+                    headers: { "Content-Type": "application/json" }
+                });
+    
+                const followedEventIds = response.data; // Assuming this is an array of IDs
+    
+                // Fetch detailed data for each followed event
+                const eventDetailsPromises = followedEventIds.map(id =>
+                    axios.get(`/api/events/${id}`, {
+                        headers: { "Content-Type": "application/json" }
+                    })
+                );
+    
+                const eventDetailsResponses = await Promise.all(eventDetailsPromises);
+                const eventDetails = eventDetailsResponses.map(res => res.data);
+    
+                // Add userName to each event
+                const eventsWithUserName = eventDetails.map(event => ({
+                    ...event,
+                    userName: getUsernameFromEmail(event.owner?.email || event.user?.email || event.creatorEmail || event.user) // Перевірте можливі властивості
+                }));
+    
+                setFollowedEventsIds(eventsWithUserName);
             } catch (error) {
-                console.error('Error fetching followed events:', error);
+                console.error("Error fetching followed events:", error);
             }
         };
-
-        fetchFollowedEvents();
+    
+        if (userId) {
+            fetchFollowed();
+        }
     }, [userId]);
 
     return (
@@ -81,8 +110,6 @@ const MyEventsPage = () => {
                                         <div><strong>Категорія:</strong> {event.category}</div>
                                     </div>
                                     <div className="col events-buttons">
-                                        <i className="material-icons grey-text">favorite</i>
-                                        <i className="material-icons grey-text">directions_run</i>
                                         <Link to={`/update/${event._id}`}>
                                             <i className="material-icons blue-text">edit</i>
                                         </Link>
@@ -96,14 +123,16 @@ const MyEventsPage = () => {
                     }
                 </div>
                 <div className="followed-events">
-                    <h3>Вподобані події</h3>
-                    {followedEvents.length > 0 ? (
-                        followedEvents.map(event => (
-                            <EventCard key={event._id} event={event} userId={userId} />
-                        ))
-                    ) : (
-                        <p>Ви не вподобали жодної події</p>
-                    )}
+                    <h4>Вподобані події</h4>
+                    <div className="events-list">
+                        {followedEventsIds.length > 0 ? (
+                            followedEventsIds.map(followedEvent => (
+                                <EventCard key={followedEvent._id} event={followedEvent} userId={userId} followedEventsIds={followedEventsIds} onFollowChange={() => {}}/>
+                            ))
+                        ) : (
+                            <p>Ви не вподобали жодної події</p>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
