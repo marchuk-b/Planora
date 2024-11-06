@@ -8,6 +8,7 @@ const schema = new Schema({
     time: {type: String, required: true},
     category: {type: String, required: true},
     description: {type: String},
+    usersWhichPresent: [{ type: Types.ObjectId, ref: 'User' }]
 })
 
 module.exports = model('Event', schema)

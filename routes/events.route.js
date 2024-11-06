@@ -207,13 +207,21 @@ router.post('/present/:id', async (req, res) => {
 
     try {
         const user = await User.findById(userId);
+        const event = await Event.findById(eventId);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
         if (!user.willBePresent.includes(eventId)) {
             user.willBePresent.push(eventId);
             await user.save();
+        }
+
+        if (!event) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+        if (!event.usersWhichPresent.includes(userId)) {
+            event.usersWhichPresent.push(userId);
+            await event.save();
         }
 
         res.status(200).json({ message: 'Event present successfully', willBePresent: user.willBePresent });
@@ -228,6 +236,7 @@ router.delete('/unpresent/:id', async (req, res) => {
 
     try {
         const user = await User.findById(userId);
+        const event = await Event.findById(eventId);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -236,6 +245,15 @@ router.delete('/unpresent/:id', async (req, res) => {
         if (eventIndex !== -1) {
             user.willBePresent.splice(eventIndex, 1); // Remove the event ID from followedEvents
             await user.save();
+        }
+
+        if (!event) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+        const userIndex = event.usersWhichPresent.indexOf(userId);
+        if (userIndex !== -1 ) {
+            event.usersWhichPresent.splice(userId, 1);
+            await event.save();
         }
 
         res.status(200).json({ message: 'Event unpresent successfully', willBePresent: user.willBePresent });
