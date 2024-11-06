@@ -74,12 +74,26 @@ router.get('/followed/:userId', async (req, res) => {
     }
 })
 
+router.get('/presented/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const user = await User.findOne({ _id: userId }).populate('willBePresent');
+        const willBePresentIds = user.willBePresent.map(event => event._id);
+        res.json(willBePresentIds);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Помилка сервера' });
+    }
+})
+
 //Get event by id
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params; // Get eventId from URL params
 
-        const event = await Event.findById(id); // Find event by its ID
+        // const event = await Event.findById(id);
+        const event = await Event.findById(id).populate('owner', 'email');
 
         if (!event) {
             return res.status(404).json({ message: 'Подія не знайдена' });
@@ -183,6 +197,50 @@ router.delete('/unfollow/:id', async (req, res) => {
         res.status(200).json({ message: 'Event unfollowed successfully', followedEvents: user.followedEvents });
     } catch (error) {
         res.status(500).json({ message: 'Error unfollowing event', error });
+    }
+});
+
+// Follow an event
+router.post('/present/:id', async (req, res) => {
+    const { userId } = req.body;
+    const eventId = req.params.id; // Get event ID from URL
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (!user.willBePresent.includes(eventId)) {
+            user.willBePresent.push(eventId);
+            await user.save();
+        }
+
+        res.status(200).json({ message: 'Event present successfully', willBePresent: user.willBePresent });
+    } catch (error) {
+        res.status(500).json({ message: 'Error present event', error });
+    }
+});
+
+router.delete('/unpresent/:id', async (req, res) => {
+    const { userId } = req.body;
+    const eventId = req.params.id; // Get event ID from URL
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const eventIndex = user.willBePresent.indexOf(eventId);
+        if (eventIndex !== -1) {
+            user.willBePresent.splice(eventIndex, 1); // Remove the event ID from followedEvents
+            await user.save();
+        }
+
+        res.status(200).json({ message: 'Event unpresent successfully', willBePresent: user.willBePresent });
+    } catch (error) {
+        res.status(500).json({ message: 'Error unpresent event', error });
     }
 });
 

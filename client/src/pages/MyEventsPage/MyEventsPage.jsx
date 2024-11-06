@@ -10,6 +10,7 @@ const MyEventsPage = () => {
     const {userId} = useContext(AuthContext)
     const [events, setEvents] = useState([])
     const [followedEventsIds, setFollowedEventsIds] = useState([]);
+    const [presentEventsIds, setPresentEventsIds] = useState([]);
 
     const getEvent = useCallback(async () => {
         try {
@@ -85,9 +86,39 @@ const MyEventsPage = () => {
                 console.error("Error fetching followed events:", error);
             }
         };
+
+        const fetchPresent = async () => {
+            try {
+                const response = await axios.get(`/api/events/presented/${userId}`, {
+                    headers: { "Content-Type": "application/json" }
+                });
+
+                const presentEventsIds = response.data;
+
+                const eventDetailsPromises = presentEventsIds.map(id =>
+                    axios.get(`/api/events/${id}`, {
+                        headers: { "Content-Type": "application/json" }
+                    })
+                );
     
+                const eventDetailsResponses = await Promise.all(eventDetailsPromises);
+                const eventDetails = eventDetailsResponses.map(res => res.data);
+    
+                // Add userName to each event
+                const eventsWithUserName = eventDetails.map(event => ({
+                    ...event,
+                    userName: getUsernameFromEmail(event.owner?.email || event.user?.email || event.creatorEmail || event.user) // Перевірте можливі властивості
+                }));
+
+                setPresentEventsIds(eventsWithUserName);
+            } catch (error) {
+                console.error("Error fetching events:", error);
+            }
+        };
+        
         if (userId) {
             fetchFollowed();
+            fetchPresent();
         }
     }, [userId]);
 
@@ -127,7 +158,25 @@ const MyEventsPage = () => {
                     <div className="events-list">
                         {followedEventsIds.length > 0 ? (
                             followedEventsIds.map(followedEvent => (
-                                <EventCard key={followedEvent._id} event={followedEvent} userId={userId} followedEventsIds={followedEventsIds} onFollowChange={() => {}}/>
+                                <EventCard key={followedEvent._id} event={followedEvent} userId={userId} 
+                                    followedEventsIds={followedEventsIds} presentEventsIds={presentEventsIds}
+                                    onFollowChange={() => {}} onPresentChange={() => {}} 
+                                />
+                            ))
+                        ) : (
+                            <p>Ви не вподобали жодної події</p>
+                        )}
+                    </div>
+                </div>
+                
+                <div className="present-events">
+                    <h4>Події, на яких буде присутній користувач</h4>
+                    <div className="events-list">
+                        {presentEventsIds.length > 0 ? (
+                            presentEventsIds.map(presentEvent => (
+                                <EventCard key={presentEvent._id} event={presentEvent} userId={userId} 
+                                    followedEventsIds={followedEventsIds} presentEventsIds={presentEventsIds}
+                                    onFollowChange={() => {}} onPresentChange={() => {}} />    
                             ))
                         ) : (
                             <p>Ви не вподобали жодної події</p>
