@@ -66,7 +66,7 @@ router.post('/login',
                 return res.status(400).json({message: "Користувача з такою поштою немає в базі"})
             }
 
-            const isMatch = bcrypt.compare(password, user.password)
+            const isMatch = await bcrypt.compare(password, user.password)
 
             if(!isMatch) {
                 return res.status(400).json({message: "Паролі не співпадають"})

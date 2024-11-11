@@ -78,22 +78,43 @@ const EventCard = ({ event, userId, onFollowChange, onPresentChange, followedEve
     const handlePresent = async () => {
         try {
             if (isPresent) {
+                // Remove attendance
                 await axios.delete(`/api/events/unpresent/${event._id}`, {
                     data: { userId }
                 });
                 localStorage.setItem(`isPresent-${event._id}`, JSON.stringify(false));
             } else {
+                
                 await axios.post(`/api/events/present/${event._id}`, {
                     userId
                 });
                 localStorage.setItem(`isPresent-${event._id}`, JSON.stringify(true));
+
+                try {
+                    const response = await axios.post(`/api/events/attend/${event._id}`, {
+                        userId,
+                        eventId: event._id
+                    }, {
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+        
+                    alert(response.data.message); // Show confirmation message
+                } catch (error) {
+                    console.error("Error confirming attendance:", error);
+                    alert("Помилка під час підтвердження присутності");
+                }
             }
+            // Toggle attendance state
             setIsPresent(!isPresent);
             onPresentChange();
         } catch (error) {
             console.error('Error present/unpresent event:', error.response ? error.response.data : error.message);
         }
     };
+    
+
 
     return (
         <div key={event._id} className="event-card">

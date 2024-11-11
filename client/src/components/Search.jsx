@@ -30,9 +30,9 @@ const Search = ({ placeholder, onSearch }) => {
                 onChange={handleSearchByChange} 
                 className="search-select"
             >
-                <option value="name">Name</option>
-                <option value="category">Category</option>
-                <option value="userName">User</option>
+                <option value="name">За назвою</option>
+                <option value="category">За категорією</option>
+                <option value="userName">За автором</option>
             </select>
         </div>
     );

@@ -2,6 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const Event = require('../models/Event');
 const User = require('../models/User');
+const { sendEventNotification } = require('../emailService');
 
 // Create event
 router.post('/create', async (req, res) => {
@@ -259,6 +260,30 @@ router.delete('/unpresent/:id', async (req, res) => {
         res.status(200).json({ message: 'Event unpresent successfully', willBePresent: user.willBePresent });
     } catch (error) {
         res.status(500).json({ message: 'Error unpresent event', error });
+    }
+});
+
+router.post('/attend/:id', async (req, res) => {
+    const { userId } = req.body;
+    const eventId = req.params.id;
+    try {
+        const event = await Event.findById(eventId);
+        if (!event) {
+            return res.status(404).json({ message: 'Подія не знайдена' });
+        }
+
+        if (!event.usersWhichPresent.includes(userId)) {
+            event.usersWhichPresent.push(userId);
+            await event.save();
+        }
+
+        // Надсилаємо повідомлення усім присутнім користувачам
+        await sendEventNotification(eventId);
+
+        res.json({ message: 'Присутність підтверджена, розсилка надіслана' });
+    } catch (error) {
+        console.error('Помилка:', error);
+        res.status(500).json({ message: 'Помилка сервера' });
     }
 });
 
