@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import "./CreatePage.scss";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const CreatePage = () => {
     const [name, setName] = useState('');
@@ -42,6 +41,7 @@ const CreatePage = () => {
             setTime('');
             setDescription('');
             setCategory('');
+
             toast.success("Подію успішно створено!");
         } catch (error) {
             console.log(error);
@@ -87,6 +87,7 @@ const CreatePage = () => {
                                 name="date"
                                 className="validate"
                                 value={date}
+                                placeholder='дд.мм.рррр'
                                 onChange={e => setDate(e.target.value)}
                             />
                             <label htmlFor="date">Дата: </label>
@@ -97,6 +98,7 @@ const CreatePage = () => {
                                 id="time"
                                 className="validate"
                                 value={time}
+                                placeholder='--:--'
                                 onChange={e => setTime(e.target.value)}
                             />
                             <label htmlFor="time">Час: </label>
@@ -136,7 +138,6 @@ const CreatePage = () => {
                         <Link to="/" className="btn-outline">Скасувати</Link>
                     </div>
                 </form>
-                <ToastContainer />
             </div>
         </div>
     );

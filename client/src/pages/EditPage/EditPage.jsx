@@ -12,7 +12,7 @@ const EditPage = () => {
     const [name, setName] = useState('');
     const [place, setPlace] = useState('');
     const [date, setDate] = useState('');
-    console.log(date)
+    // console.log(date)
     const [time, setTime] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
@@ -39,7 +39,7 @@ const EditPage = () => {
                 toast.error("Не вдалося завантажити подію.");
             }
         };
-        console.log(eventId)
+        // console.log(eventId)
         if (eventId) {
             fetchEvent();
         }

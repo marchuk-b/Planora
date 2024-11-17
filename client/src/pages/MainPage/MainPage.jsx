@@ -4,6 +4,7 @@ import './MainPage.scss';
 import Search from '../../components/Search';
 import {AuthContext} from '../../context/AuthContext'
 import EventCard from '../../components/EventCard';
+const { ToastContainer } = require('react-toastify');
 
 const MainPage = () => {
     const {userId} = useContext(AuthContext)
@@ -112,6 +113,17 @@ const MainPage = () => {
                     )}
                 </div>
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </div>
     );
 };

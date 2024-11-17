@@ -54,6 +54,9 @@ const Navbar = () => {
                                 <Link to="/myevents">Мої події</Link>
                                 <Link to="/" onClick={logout}>Вийти</Link>
                             </div>
+                            <span className="material-icons">
+                                expand_more 
+                            </span>
                         </div>
                     ) : (
                         <ul id="nav-mobile" className="right hide-on-med-and-down">

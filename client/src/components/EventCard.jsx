@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import "./EventCard.scss";
+const { toast } = require('react-toastify');
 
 const EventCard = ({ event, userId, onFollowChange, onPresentChange, followedEventsIds, presentEventsIds }) => {
     const [isFollowing, setIsFollowing] = useState(false);
@@ -72,6 +73,7 @@ const EventCard = ({ event, userId, onFollowChange, onPresentChange, followedEve
             onFollowChange();
         } catch (error) {
             console.error('Error following/unfollowing event:', error.response ? error.response.data : error.message);
+            toast.error("Помилка під час підписки/відписки");
         }
     };
 
@@ -100,10 +102,11 @@ const EventCard = ({ event, userId, onFollowChange, onPresentChange, followedEve
                         }
                     });
         
-                    alert(response.data.message); // Show confirmation message
+                    console.log(response.data.message); // Show confirmation message
+                    toast.success('Присутність підтверджена, розсилка надіслана');
                 } catch (error) {
                     console.error("Error confirming attendance:", error);
-                    alert("Помилка під час підтвердження присутності");
+                    toast.error("Помилка під час підтвердження присутності");
                 }
             }
             // Toggle attendance state
@@ -111,6 +114,7 @@ const EventCard = ({ event, userId, onFollowChange, onPresentChange, followedEve
             onPresentChange();
         } catch (error) {
             console.error('Error present/unpresent event:', error.response ? error.response.data : error.message);
+            toast.error("Помилка під час зміни статусу присутності");
         }
     };
     

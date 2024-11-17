@@ -63,13 +63,15 @@ router.post('/login',
             const user = await User.findOne({ email })
 
             if(!user) {
-                return res.status(400).json({message: "Користувача з такою поштою немає в базі"})
+                // return res.status(400).json({message: "Користувача з такою поштою немає в базі"})
+                return res.status(400).json({message: "Користувача з такою поштою не існує"})
             }
 
             const isMatch = await bcrypt.compare(password, user.password)
 
             if(!isMatch) {
-                return res.status(400).json({message: "Паролі не співпадають"})
+                // return res.status(400).json({message: "Паролі не співпадають"})
+                return res.status(400).json({message: "Неправильний пароль"})
             }
 
             const jwtSecret = 'firjroepjgtepor32141rdeijwi2ij3e0d02djw0ejdw0ej'

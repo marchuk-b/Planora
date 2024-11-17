@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import "./MyEventsPage.scss"
 import EventCard from '../../components/EventCard';
+const { ToastContainer } = require('react-toastify');
 
 const MyEventsPage = () => {
     const {userId} = useContext(AuthContext)
@@ -184,6 +185,18 @@ const MyEventsPage = () => {
                     </div>
                 </div>
             </div>
+
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </div>
     );
 }
