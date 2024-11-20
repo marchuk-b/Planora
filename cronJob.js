@@ -1,4 +1,3 @@
-// cronJob.js
 const cron = require('node-cron');
 const { sendEventNotification } = require('./emailService');
 const Event = require('./models/Event');

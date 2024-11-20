@@ -1,8 +1,11 @@
 .event-card {
-    padding: 1rem;
+    padding: 1.7rem;
     border: 1px solid #ddd;
     border-radius: 8px;
     width: 32%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     transition: all .2s linear;
     cursor: pointer;
@@ -10,6 +13,8 @@
     h3 {
         margin: 0;
         font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
     }
 
     p {
@@ -17,14 +22,18 @@
         align-items: center;
         font-size: 1rem;
         margin: 0.5rem 0;
-
+        
         .material-icons {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             color: #6c757d;
             margin-right: 0.5rem; // Add space between icon and text
+            
         }
     }
-
+    .description {
+        margin-top: 15px;
+    }
+    
     .events-buttons {
         display: flex;
         gap: 1rem;
@@ -33,7 +42,7 @@
         margin-top: 1rem;
 
         .material-icons {
-            font-size: 1.5rem;
+            font-size: 1.85rem;
             cursor: pointer;
             color: #757575;
 

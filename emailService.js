@@ -1,4 +1,3 @@
-// emailService.js
 const nodemailer = require('nodemailer');
 const User = require('./models/User');
 
@@ -27,7 +26,7 @@ async function sendEmail(to, subject, text, html = null) {
 
 const formatDate = (timestamp) => {
     const date = new Date(timestamp);
-    return date.toLocaleDateString(); // Format as per your preference
+    return date.toLocaleDateString();
 };
 
 async function sendEventNotification(eventId) {
@@ -41,8 +40,8 @@ async function sendEventNotification(eventId) {
 
     // Тема та контент листа
     const subject = `Нагадування про подію: ${event.name}`;
-    const text = `Привіт! Ви підтвердили присутність на події "${event.name}", яка відбудеться ${formatDate(event.date)} о ${event.time}.`;
-    const html = `<p>Привіт! Ви підтвердили присутність на події "<strong>${event.name}</strong>", яка відбудеться ${formatDate(event.date)} о ${event.time}.</p>`;
+    const text = `Привіт! Ви підтвердили присутність на події "${event.name}", яка відбудеться ${formatDate(event.date)} о ${event.time} за такою адресою: ${event.place}.`;
+    const html = `<p>Привіт! Ви підтвердили присутність на події "<strong>${event.name}</strong>", яка відбудеться <strong>${formatDate(event.date)}</strong> о <strong>${event.time}</strong> за такою адресою: <strong>${event.place}</strong>.</p>`;
 
     // Надсилання листа кожному присутньому користувачеві
     for (const user of event.usersWhichPresent) {

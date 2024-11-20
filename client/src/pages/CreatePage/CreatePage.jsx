@@ -3,8 +3,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import "./CreatePage.scss";
-
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreatePage = () => {
     const [name, setName] = useState('');
@@ -18,8 +18,7 @@ const CreatePage = () => {
 
     const createEvent = useCallback(async () => {
         if (!name || !place || !date || !time || !category) {
-            alert("Будь ласка, заповніть всі поля."); 
-            return null;
+            return toast.warn("Будь ласка, заповніть всі поля.");
         }
 
         try {
@@ -116,6 +115,7 @@ const CreatePage = () => {
                                 <option value="Зустріч">Зустріч</option>
                                 <option value="Семінар">Семінар</option>
                                 <option value="Вебінар">Вебінар</option>
+                                <option value="Майстер-клас">Майстер-клас</option>
                             </select>
                             <label htmlFor="category" className={`category-label ${category ? 'active' : ''}`}>Категорія:</label>
                         </div>

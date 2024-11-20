@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import "./EditPage.scss";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const EditPage = () => {
@@ -48,8 +48,7 @@ const EditPage = () => {
     // Update the event
     const updateEvent = useCallback(async () => {
         if (!name || !place || !date || !time || !category) {
-            toast.warn("Будь ласка, заповніть всі поля.");
-            return;
+            return toast.warn("Будь ласка, заповніть всі поля.");
         }
 
         try {
@@ -133,6 +132,7 @@ const EditPage = () => {
                                 <option value="Зустріч">Зустріч</option>
                                 <option value="Семінар">Семінар</option>
                                 <option value="Вебінар">Вебінар</option>
+                                <option value="Майстер-клас">Майстер-клас</option>
                             </select>
                             <label htmlFor="category" className={`category-label ${category ? 'active' : ''}`}>Категорія:</label>
                         </div>
@@ -154,7 +154,6 @@ const EditPage = () => {
                         <Link to="/" className="btn-outline">Скасувати</Link>
                     </div>
                 </form>
-                <ToastContainer />
             </div>
         </div>
     );

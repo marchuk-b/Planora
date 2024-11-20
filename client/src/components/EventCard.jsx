@@ -122,31 +122,34 @@ const EventCard = ({ event, userId, onFollowChange, onPresentChange, followedEve
 
     return (
         <div key={event._id} className="event-card">
-            <h3>{event.name}</h3>
-            <p>
-                <span className="material-icons">place</span>
-                {event.place}
-            </p>
-            <p>
-                <span className="material-icons">today</span>
-                {new Date(event.date).toLocaleDateString()}
-            </p>
-            <p>
-                <span className="material-icons">schedule</span> 
-                {event.time}
-            </p>
-            <p>
-                <span className="material-icons">category</span>
-                {event.category}
-            </p>
-            <p>
-                <span className="material-icons">perm_identity</span>
-                {event.userName}
-            </p>
-            <p>
-                <span className="material-icons">description</span>
-                {event.description}
-            </p>
+            <div className="event-info">
+                <h3>{event.name}</h3>
+                <p>
+                    <span className="material-icons">place</span>
+                    {event.place}
+                </p>
+                <p>
+                    <span className="material-icons">today</span>
+                    {new Date(event.date).toLocaleDateString()}
+                </p>
+                <p>
+                    <span className="material-icons">schedule</span> 
+                    {event.time}
+                </p>
+                <p>
+                    <span className="material-icons">category</span>
+                    {event.category}
+                </p>
+                <p>
+                    <span className="material-icons">perm_identity</span>
+                    {event.userName}
+                </p>
+                <p className='description'>
+                    <span className="material-icons">description</span>
+                    {event.description}
+                </p>
+            </div>
+            
 
             <div className="col events-buttons">
                 <i 
